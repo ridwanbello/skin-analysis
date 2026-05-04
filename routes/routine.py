@@ -20,7 +20,59 @@ class SkinConcerns(BaseModel):
     texture: dict | None = None
 
 @router.post("/daily" , summary="Get daily routine",
-             description="Combines skin analysis and weather data to generate a personalized skincare routine and outfit suggestions.")
+             description="Combines skin analysis and weather data to generate a personalized skincare routine and outfit suggestions.",
+             responses={
+        200: {
+            "description": "Successful daily routine",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "weather_brief": "Today's temperature ranges from 18.0°C to 34.0°C with light rain. Rain is expected — plan accordingly.",
+                        "weather": {
+                            "temp_min": 18.0,
+                            "temp_max": 34.0,
+                            "temp_current": 22.1,
+                            "humidity": 35,
+                            "has_rain": True,
+                            "has_storm": False
+                        },
+                        "skin_concerns": {
+                            "acne": {"ui_score": 99, "raw_score": 100.0},
+                            "redness": {"ui_score": 76, "raw_score": 68.3}
+                        },
+                        "skincare_routine": [
+                            "Gentle cleanser — cleanse morning and night",
+                            "Niacinamide serum — reduces acne and controls oil production",
+                            "SPF 50 sunscreen — high UV expected today, reapply every 2 hours",
+                            "Waterproof mascara and setting spray — rain expected today"
+                        ],
+                        "outfit_suggestions": [
+                            "Light breathable fabrics — it will be hot today (linen or cotton)",
+                            "Big temperature swing today (18.0°C → 34.0°C) — wear removable layers",
+                            "Rain expected — waterproof jacket or umbrella recommended"
+                        ]
+                    }
+                }
+            }
+        },
+        500: {
+            "description": "Routine generation failed",
+            "content": {
+                "application/json": {
+                    "examples": {
+                        "weather_error": {
+                            "summary": "Weather fetch failed",
+                            "value": {"detail": "Weather error: Client error 401 Unauthorized"}
+                        },
+                        "skin_error": {
+                            "summary": "Skin analysis failed",
+                            "value": {"detail": "Skin analysis error: error_no_face detected"}
+                        }
+                    }
+                }
+            }
+        }
+    })
 async def daily_routine(
     lat: float,
     lon: float,
