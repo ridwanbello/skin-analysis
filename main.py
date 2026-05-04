@@ -43,4 +43,4 @@ app.include_router(routine.router, prefix="/api/routine")
 
 @app.get("/")
 def root():
-    return {"message": "Skin & Weather API running"}
+    return {"message": "Skin & Weather Analysis API running"}
