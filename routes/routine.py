@@ -19,7 +19,8 @@ class SkinConcerns(BaseModel):
     redness: dict | None = None
     texture: dict | None = None
 
-@router.post("/daily")
+@router.post("/daily" , summary="Get daily routine",
+             description="Combines skin analysis and weather data to generate a personalized skincare routine and outfit suggestions.")
 async def daily_routine(
     lat: float,
     lon: float,

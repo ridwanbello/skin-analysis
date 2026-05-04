@@ -12,7 +12,22 @@ OPENWEATHERMAP_API_KEY = os.getenv("OPENWEATHERMAP_API_KEY")
 
 
 
-app = FastAPI()
+app = FastAPI(
+    title="SkinCast API",
+    description="""
+    AI-powered skin analysis and weather-based skincare & outfit recommendations.
+    
+    ## Features
+    - **Skin Analysis** — detects acne, dark spots, redness, texture and more
+    - **Weather Brief** — real-time weather data by location
+    - **Daily Routine** — personalized skincare + outfit suggestions
+    """,
+    version="1.0.0",
+    contact={
+        "name": "Ridwan Bello",
+        "email": "belloridwan60@gmail.com"
+    }
+)
 
 app.add_middleware(
     CORSMiddleware,

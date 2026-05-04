@@ -3,7 +3,8 @@ from services.perfectcorp import analyze_skin
 
 router = APIRouter()
 
-@router.post("/analyze")
+@router.post("/analyze", summary="Analyze skin from photo", 
+             description="Upload a face photo to get skin concern scores including acne, dark spots, redness, texture and more.")
 async def analyze(file: UploadFile = File(...)):
     if file.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=400, detail="Only JPEG or PNG accepted")
