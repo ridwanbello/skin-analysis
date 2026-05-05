@@ -97,6 +97,16 @@ async def daily_routine(
                     "ui_score": item.get("ui_score"),
                     "raw_score": item.get("raw_score")
                 }
+
+    # Fix overall score
+        overall_score = raw_result.get("all")
+        if isinstance(overall_score, dict):
+            overall_score = overall_score.get("score")
+        else:
+            # Fallback — calculate average from all ui_scores
+            scores = [v["ui_score"] for v in skin_concerns.values() if v.get("ui_score")]
+            overall_score = round(sum(scores) / len(scores), 1) if scores else None
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Skin analysis error: {str(e)}")
 
@@ -105,6 +115,7 @@ async def daily_routine(
         "weather_brief": generate_weather_brief(weather),
         "weather": weather,
         "skin_concerns": skin_concerns,
+        "overall_score": overall_score,
         "skincare_routine": generate_skincare_routine(skin_concerns, weather),
         "outfit_suggestions": generate_outfit_suggestions(weather)
     }
