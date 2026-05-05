@@ -83,6 +83,10 @@ async def analyze(file: UploadFile = File(...)):
     overall_score = result.get("all", {})
     if isinstance(overall_score, dict):
         overall_score = overall_score.get("score")
+    else:
+    # Calculate average from all ui_scores as fallback
+        scores = [v["ui_score"] for v in skin_concerns.values() if v.get("ui_score")]
+        overall_score = round(sum(scores) / len(scores), 1) if scores else None
 
     return {
         "skin_concerns": skin_concerns,
